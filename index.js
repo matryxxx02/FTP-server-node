@@ -1,3 +1,3 @@
 import Server from './modules/Server';
 
-new Server();
+const s = new Server();
