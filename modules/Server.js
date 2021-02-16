@@ -1,5 +1,5 @@
 import { createServer } from 'net';
-
+import FileSystem from './FileSystem';
 
 export default class Server {
 
@@ -11,11 +11,12 @@ export default class Server {
     async init(socket) {
         console.log('Client connected');
         const data = await this.write(socket, '220 FTP server (vsftpd)');
-        this.serverResponse(data, socket);
+        const fs = new FileSystem();
+        this.serverResponse(data, socket, fs);
         socket.on('end', () => console.log('Closed'));
     }
 
-    async serverResponse(data, socket) {
+    async serverResponse(data, socket, fs) {
         let response;
         switch (data.toString().split(" ")[0]) {
             case "AUTH":
@@ -29,6 +30,7 @@ export default class Server {
             case "CWD":
             case "CDUP":
             case "LIST":
+                response = await fs.list();
             default:
                 response = "Server error"
 
