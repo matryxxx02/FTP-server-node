@@ -1,64 +1,51 @@
 import { createServer } from 'net';
-import { Worker } from 'worker_threads';
 
 
 export default class Server {
 
     constructor() {
-        this.server = createServer(async socket => await this.clientConnected(socket).catch(err => console.error({err})));
+        this.server = createServer(socket => this.init(socket));
         this.server.listen(process.env.PORT, () => console.log('Server created'));
     }
 
-    clientConnected(socket) {
-        return new Promise((resolve, reject) => {
-            const worker = new Worker('./modules/clientConnected.js', { workerData });
-            worker.on('message', resolve);
-            worker.on('error', reject);
-            worker.on('exit', (code) => {
-                if (code !== 0)
-                    reject(new Error(`Worker stopped with exit code ${code}`));
-            })
-        })
-    }
-
-    init(socket) {
-        this.socket = socket;
+    async init(socket) {
         console.log('Client connected');
-        socket.on('data', (data) => {
-            
-            const is_kernel_buffer_full = this.serverResponse(data, socket);
-            if (is_kernel_buffer_full) {                
-                console.log('Data was flushed successfully from kernel buffer i.e written successfully!');
-            }else{
-                socket.pause();
-            }
-        })
+        const data = await this.write(socket, '220 FTP server (vsftpd)');
+        this.serverResponse(data, socket);
         socket.on('end', () => console.log('Closed'));
-        this.handShake(socket);
     }
 
-    serverResponse(data, socket) {
+    async serverResponse(data, socket) {
         let response;
-        console.log(data.toString());
         switch (data.toString().split(" ")[0]) {
             case "AUTH":
-                response = "530 Please login with USER and PASS.\n";
+                response = "530 Please login with USER and PASS.";
                 break;
             case "USER":
-                
-            case "PASS" :
-            case "PWD" :
-            case "CWD" :
+                response = "331 Please specify the password."
+            case "PASS":
+                response = "230 Login successful."
+            case "PWD":
+            case "CWD":
             case "CDUP":
             case "LIST":
             default:
-                response = "530 Oh shit ."
-                
+                response = "Server error"
+
         }
-        return socket.write(response);
+        const clientResponse = await this.write(socket, response);
+        this.serverResponse(clientResponse, socket);
     }
 
-    async handShake(socket) {
-        socket.write('220 FTP server (vsftpd)\n');
+    /**
+     * Write data to the socket buffer to execute the provided command
+     * @param {string} command
+     * @return {Promise<String>} Resolving on response from the server
+     */
+    write(socket, command) {
+        return new Promise(resolve => {
+            socket.once('data', buffer => resolve(buffer.toString()));
+            socket.write(`${command}\r\n`);
+        });
     }
 }
