@@ -1,5 +1,5 @@
 import { createServer } from 'net';
-import FileSystem from './FileSystem';
+import FileSystem from './FileSystem.js';
 
 export default class Server {
 
