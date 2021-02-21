@@ -1,0 +1,27 @@
+[-] CMP	Le code du serveur compile correctement avec Maven
+[-] DOC	Le code du serveur est documenté (Readme.md, Javadoc)
+[-] TST	Le code du serveur est proporement testé (tests unitaires sous JUnit)
+[-] COO	Le code du serveur est conçu en suivant les principes de conception objet
+[-] EXE	Le code du serveur s'exécute
+[-] CON	Je peux me connecter au serveur avec un client FTP
+[-] BADU	Le serveur rejette ma connection si mon utilisateur est inconnu
+[-] BADP	Le serveur rejette ma connection si mon mot de passe est incorrect
+[x] LST	Je peux lister le contenu d'un répertoire distant
+[x] CWD	Je peux entrer dans un répertoire distant
+[x] CDUP	Je peux quitter un répertoire distant
+[x] ROOT	Je ne peux pas descendre dans la hiérarchie au delà du répertoire racine de l'utilisateur
+[x] GETT	Je peux télécharger un fichier texte
+[x] GETB	Je peux télécharger un fichier binaire (image)
+[-] GETR	Je peux télécharger un répertoire complet
+[-] PUTT	Je peux mettre en ligne un fichier texte
+[-] PUTB	Je peux mettre en ligne un fichier binaire (image)
+[-] PUTR	Je peux mettre en ligne un répertoire complet
+[-] RENF	Je peux renommer un fichier distant
+[x] MKD	Je peux créer un répertoire distant
+[-] REND	Je peux renommer un répertoire distant
+[x] RMD	Je peux supprimer un répertoire distant
+[-] CLOS	Je peux couper proprement la connection (sans crasher le serveur)
+[-] PORT	Je peux configurer le port du serveur FTP
+[-] HOME	Je peux configurer le répertoire racine du serveur FTP
+[-] ACPA	Le serveur supporte le mode ACTIF et PASSIF
+[-] THRE	Le serveur supporte la connexion de plusieurs clients simultanés

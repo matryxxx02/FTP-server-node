@@ -1,5 +1,5 @@
 import { createServer } from 'net';
-
+import FileSystem from './FileSystem.js';
 
 export default class Server {
 
@@ -15,11 +15,12 @@ export default class Server {
         this.password = null;
         this.connected = false;
         const data = await this.write(socket, '220 FTP server (vsftpd)');
-        this.serverResponse(data, socket);
+        const fs = new FileSystem();
+        this.serverResponse(data, socket, fs);
         socket.on('end', () => console.log('Closed'));
     }
 
-    async serverResponse(data, socket) {
+    async serverResponse(data, socket, fs) {
         let response;
         const dataArray = data.toString().replace(/\n|\r/g,'').split(" ");
         switch (dataArray[0]) {
@@ -36,9 +37,7 @@ export default class Server {
             case "CWD":
             case "CDUP":
             case "LIST":
-                this.data = "COUCOUC";
-                response = "150 Here comes the directory listing."
-                break;
+                response = await fs.list();
             case "PASV":
                 response = this.pasv();
                 break;
