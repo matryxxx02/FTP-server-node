@@ -6,6 +6,7 @@ export default class Server {
     constructor() {
         this.server = createServer(socket => this.init(socket));
         this.server.listen(process.env.PORT, () => console.log('Server created'));
+        this.pasv();
     }
 
     async init(socket) {
@@ -86,12 +87,12 @@ export default class Server {
     }
 
     pasv() {
-        const portData = Math.floor((Math.random() * (5543)) + 60000);
-        const response = `227 Entering passive mode (127,0,0,1,${Math.floor(portData / 256).toString()},${Math.floor(portData % 256).toString()})`
         //serveur qui ecoute sur le portData
         const serverData = createServer(socket => this.write(socket, this.data));
-        serverData.listen(portData, () => console.log('Server data created'));
+        serverData.listen(0, () => console.log('Server data created'));
+        const portData = serverData.address().port;
+        const response = `227 Entering passive mode (127,0,0,1,${Math.floor(portData / 256).toString()},${Math.floor(portData % 256).toString()})`
+        console.log(portData, response);
         return response;
-        
     }
 }
