@@ -1,4 +1,4 @@
 export const pwd = {
-    commandName:'pwd',
+    commandName:'PWD',
     handler:()=>{}
 }

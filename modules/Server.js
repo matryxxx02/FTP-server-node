@@ -21,7 +21,8 @@ export default class Server {
 
     async serverResponse(data, socket, fs) {
         let response;
-        const dataArray = data.toString().replace(/\n|\r/g,'').split(" ");
+        const dataArray = data.toString().replace(/\n|\r/g, '').split(" ");
+        //TODO : FTP commands
         switch (dataArray[0]) {
             case "AUTH":
                 response = "530 Please FTPConnection with USER and PASS.";
