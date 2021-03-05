@@ -8,7 +8,9 @@ export default class FileSystem {
     }
 
     buildPath(path) {
-        return `root/${this.path.join('/')}${path ? `/${path}` : ''}`;
+        const curPath = this.path.length > 0 ? `/${this.path.join('/')}` : '';
+        const endPath = path ? `/${path}` : '';
+        return `root${curPath}${endPath}`;
     }
 
     pwd() {
@@ -42,32 +44,64 @@ export default class FileSystem {
         });
     }
 
-    mkd(dirname) {
+    mkd(nodeName) {
         return new Promise((resolve, reject) => {
-            exec(`mkdir ${this.buildPath(dirname)}`, err => {
+            exec(`mkdir ${this.buildPath(nodeName)}`, err => {
                 if (err) return reject('550 Permission denied.');
-                return resolve('250 Directory successfuly created.');
+                return resolve('250 Successfuly created.');
             });
         });
     }
 
-    rmd(dirname) {
+    rnto(oldName, newName) {
         return new Promise((resolve, reject) => {
-            exec(`rm -rf ${this.buildPath(dirname)}`, err => {
+            exec(`mv ${this.buildPath(oldName)} ${this.buildPath(newName)}`, err => {
                 if (err) return reject('550 Permission denied.');
-                return resolve('250 Directory successfuly deleted.');
+                return resolve('250 Successfuly renamed.');
             });
         });
     }
 
-    async retr(filename) {
-        const filepath = this.buildPath(filename);
+    rmd(nodeName) {
+        return new Promise((resolve, reject) => {
+            exec(`rm -rf ${this.buildPath(nodeName)}`, err => {
+                if (err) return reject('550 Permission denied.');
+                return resolve('250 Successfuly deleted.');
+            });
+        });
+    }
+
+    async retr(nodeName) {
+        const nodePath = this.buildPath(nodeName);
         try {
-            await fs.stat(filepath);
-            const data = await fs.readFile(filepath);
-            return data;
+            const node = await fs.lstat(nodePath);
+            if (node.isFile()) {
+                return await fs.readFile(nodePath);
+            } else {
+                throw new Error('550 Requested node must be a file');
+            }
         } catch (error) {
-            throw new Error('550 This file does not exists or is not accessible');
+            throw new Error('550 This file does not exist or is not accessible');
         }
     }
+
+    async stor(nodeName, nodeBuffer) {
+        return new Promise((resolve, reject) => {
+            fs.writeFile(this.buildPath(nodeName), nodeBuffer, err => {
+                if (err) return reject(err);
+                console.log(nodeName, nodeBuffer)
+                return resolve(true);
+            });
+        });
+    }
 }
+
+/* TESTS */
+// const f = new FileSystem();
+
+// (async () => {
+//     const test = await f.retr('image.png');
+//     console.log(test)
+//     const doIt = await f.stor('hello_test', test);
+//     console.log(doIt)
+// })();
