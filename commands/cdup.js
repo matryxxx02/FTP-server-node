@@ -1,4 +1,4 @@
-export const cdup = {
+export default {
     commandName:'CDUP',
     handler:()=>{}
 }

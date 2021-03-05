@@ -1,4 +1,4 @@
-export const rmd = {
+export default {
     commandName:'RMD',
     handler:()=>{}
 }

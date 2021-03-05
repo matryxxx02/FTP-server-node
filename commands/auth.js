@@ -1,6 +1,7 @@
-export const auth = {
+export default {
     commandName:'AUTH',
-    handler: (socket, write) => {
+    handler: ({socket}, write) => {
         write(socket, "530 Please FTPConnection with USER and PASS.");
     }
 }
+

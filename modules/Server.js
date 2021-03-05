@@ -1,5 +1,6 @@
 import { createServer } from 'net';
 import { write } from "../utils/responseUtils";
+import ConnectionFTP from './ConnectionFTP.js';
 
 export default class Server {
 
@@ -11,7 +12,7 @@ export default class Server {
 
     async initConnection(socket) {
         console.log('Client connected');
-        const data = await write(socket, '220 FTP server (vsftpd)');
+        socket.write('220 FTP server (vsftpd)\r\n');
         const connection = new ConnectionFTP(this, socket);
         this.connections[connection.id] = connection;
         socket.on('end', () => console.log('Closed'));

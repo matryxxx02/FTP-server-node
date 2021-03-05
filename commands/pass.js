@@ -1,4 +1,4 @@
-export const pass = {
+export default {
     commandName:'PASS',
     handler: ({socket, message}, write) => {
         let response;

@@ -1,4 +1,4 @@
-export const list = {
+export default {
     commandName:'LIST',
     handler:()=>{}
 }

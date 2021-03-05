@@ -1,19 +1,17 @@
-import { cdup } from '../commands/cdup.js'
-import { list } from '../commands/list.js'
-import { mkd } from '../commands/mkd.js'
-import { pasv } from '../commands/pasv.js'
-import { pwd } from '../commands/pwd.js'
-import { retr } from '../commands/retr.js'
-import { rmd } from '../commands/rmd.js'
+import fs from 'fs/promises';
 
-const registry = {
-    cdup,
-    list,
-    mkd,
-    pasv,
-    pwd,
-    retr,
-    rmd
+let registry;
+
+try {
+    const files = await fs.readdir('commands');
+    const modules = new Map(await Promise.all(files.map(async filename => {
+        const mod = await import(`../commands/${filename}`);
+        return [filename.split('.')[0], mod.default];
+    })));
+    registry = Object.fromEntries(modules);
+    
+} catch (error) {
+    console.error(error);
 }
 
-export default registry; 
+export default registry;

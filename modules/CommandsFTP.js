@@ -1,5 +1,6 @@
 import registry from "./commandsRegistry"
 import { write } from '../utils/responseUtils.js'
+
 export default class CommandsFTP {
     constructor(connection) {
         this.commandHistory = {}
@@ -17,9 +18,8 @@ export default class CommandsFTP {
     executeCommand = (req) => {
         const clientRequest = this.parseClientResponse(req);
         const command = registry[clientRequest.command];
-        console.log(command)
-        if (command) command.handler({ socket: this.connection.commandSocket, message: command.message }, write);
-        //TODO: reponse si la commande n'existe pas  
-        //else write()
+
+        if (command) command.handler({ socket: this.connection.commandSocket, connection : this.connection, message: clientRequest.message }, write);
+        else write(this.connection.commandSocket, "530 notexist")
     }
 }

@@ -1,4 +1,6 @@
-export const pasv = {
+export default {
     commandName:'PASV',
-    handler:()=>{}
+    handler:()=>{
+        //TODO: implement passive mode 
+    }
 }

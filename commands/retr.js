@@ -1,4 +1,4 @@
-export const retr = {
+export default {
     commandName:'RETR',
     handler:()=>{}
 }

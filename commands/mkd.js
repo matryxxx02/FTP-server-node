@@ -1,4 +1,4 @@
-export const mkd = {
+export default {
     commandName:'MKD',
     handler:()=>{}
 }

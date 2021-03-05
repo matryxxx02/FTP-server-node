@@ -12,7 +12,7 @@ export default class ConnectionFTP {
         this.password = null;
 
         //events : 
-        this.commandSocket.on('data', () => this.commands.executeCommand())
+        this.commandSocket.on('data', (data) => this.commands.executeCommand(data))
     }
     
     authent = (login, pwd) => {

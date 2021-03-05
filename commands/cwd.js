@@ -1,4 +1,4 @@
-export const cwd = {
+export default {
     commandName:'CWD',
     handler:()=>{}
 }
