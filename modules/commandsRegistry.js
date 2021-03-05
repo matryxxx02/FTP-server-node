@@ -6,7 +6,7 @@ import { pwd } from '../commands/pwd.js'
 import { retr } from '../commands/retr.js'
 import { rmd } from '../commands/rmd.js'
 
-export default registry = {
+const registry = {
     cdup,
     list,
     mkd,
@@ -15,3 +15,5 @@ export default registry = {
     retr,
     rmd
 }
+
+export default registry; 

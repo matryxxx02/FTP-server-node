@@ -71,10 +71,3 @@ export default class FileSystem {
         }
     }
 }
-
-/* TESTS */
-// const f = new FileSystem();
-
-// (async () => {
-//     console.log(await f.mkd('test'))
-// })();
