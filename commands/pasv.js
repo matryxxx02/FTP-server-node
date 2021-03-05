@@ -1,6 +1,8 @@
+import Passive from '../connectorType/Passive.js'
 export default {
     commandName:'PASV',
-    handler:()=>{
-        //TODO: implement passive mode 
+    handler: ( { socket }, write ) => {
+        const passiveConnector = new Passive();
+        write(socket, passiveConnector.pasv());
     }
 }
