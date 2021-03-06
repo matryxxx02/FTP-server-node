@@ -37,7 +37,7 @@ export default class CommandsFTP {
     executeCommand = (req) => {
         const clientRequest = this.parseClientResponse(req);
         const command = registry[clientRequest.command];
-        console.log(clientRequest)
+
         if (command) command.handler({
             socket: this.connection.commandSocket,
             connection: this.connection,

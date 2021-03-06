@@ -31,7 +31,6 @@ export default class FileSystem {
      */
     pwd() {
         const path = this.buildPath().slice(4);
-        console.log(path)
         return `257 "${path ? path : '/'}" is the current directory`;
     }
 
@@ -159,7 +158,6 @@ export default class FileSystem {
         return new Promise((resolve, reject) => {
             fs.writeFile(this.buildPath(nodeName), nodeBuffer, err => {
                 if (err) return reject(err);
-                console.log(nodeName, nodeBuffer)
                 return resolve(true);
             });
         });

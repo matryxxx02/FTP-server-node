@@ -7,7 +7,6 @@ export default {
         } catch (error) {
             res = error;
         }
-        console.log(res)
         write(socket, res);
     }
 }

@@ -7,7 +7,7 @@ export default {
         } catch (error) {
             res = error;
         }
-        console.log(res)
+
         socket.write(`150 Opening BINARY mode data connection for filename (sizeoffile)\r\n`);
         await commands.connector.dataSocket.write(res);
         await commands.connector.destroyDataSocket();

@@ -2,6 +2,8 @@
 
 Serveur FTP en [Node.js](https://nodejs.org).
 
+[Voici une vidéo résumant les fonctionnalités principales du Serveur](https://youtu.be/OSJTLXp5hAc)
+
 ## Architecture
 
 Voici l'architecture du projet :

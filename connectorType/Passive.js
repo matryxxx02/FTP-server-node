@@ -24,7 +24,7 @@ export default class Passive extends ConnectorMode {
         serverData.listen(0, () => {
             const portData = serverData.address().port;
             this.pasv = `227 Entering passive mode (127,0,0,1,${Math.floor(portData / 256).toString()},${Math.floor(portData % 256).toString()}).`
-            console.log('Server data created on port' + portData)
+            console.log('Server data created on port: ' + portData)
             write(this.connection.commandSocket, this.pasv);
         });
     }
