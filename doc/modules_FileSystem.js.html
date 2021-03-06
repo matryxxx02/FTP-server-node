@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/FileSystem.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/FileSystem.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import fs from 'fs/promises';
+import { exec } from 'child_process';
+
+/**
+ * Creates a new File System manager
+ * @class
+ */
+export default class FileSystem {
+
+    constructor() {
+        this.root = process.env.HOME_DIR || "root";
+        this.path = [];
+        this.nodeName = "";
+    }
+
+    /**
+     * Returns a formatted local path including the new provided one
+     * @private
+     * @param {string} path 
+     * @returns {string} Local path
+     */
+    buildPath(path) {
+        const curPath = this.path.length > 0 ? `/${this.path.join('/')}` : '';
+        const endPath = path ? `/${path}` : '';
+        return `${this.root}${curPath}${endPath}`;
+    }
+
+    /**
+     * Returns the current working directory
+     * @returns {string} Result FTP code and message
+     */
+    pwd() {
+        const path = this.buildPath().slice(4);
+        console.log(path)
+        return `257 "${path ? path : '/'}" is the current directory`;
+    }
+
+    /**
+     * Changes the current working directory
+     * @param {string} path 
+     * @returns {string} Result FTP code and message
+     */
+    cwd(path) {
+        return new Promise((resolve, reject) => {
+            exec(`cd ${this.buildPath(path)}`, err => {
+                if (err) return reject('550 Failed to change directory.');
+                this.path.push(path);
+                return resolve('250 Directory successfully changed.');
+            });
+        });
+    }
+
+    /**
+     * Changes to parent directory
+     * @returns {string} Result FTP code and message
+     */
+    cdup() {
+        if (this.path.length > 0) {
+            this.path.pop();
+            return '250 Directory successfully changed.';
+        }
+        throw new Error('550 Failed to change directory.');
+    }
+
+    /**
+     * Returns information of a file or directory if specified, 
+     * else information of the current working directory is returned
+     * @param {string} args Any generic linux ls arguments
+     * @returns {string} List result or FTP error code and message
+     */
+    list(args = '') {
+        return new Promise((resolve, reject) => {
+            exec(`ls -l ${args} ${this.buildPath()}`, (err, stdout) => {
+                if (err) return reject('550 Failed to retrieve directory listing.');
+                const ls = stdout.split('\n').slice(1).join('\n');
+                return resolve(ls.normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
+            });
+        });
+    }
+
+    /**
+     * Creates a new directory
+     * @param {string} nodeName 
+     * @returns {string} Result FTP code and message
+     */
+    mkd(nodeName) {
+        return new Promise((resolve, reject) => {
+            exec(`mkdir ${this.buildPath(nodeName)}`, err => {
+                if (err) return reject('550 Permission denied.');
+                return resolve('250 Successfuly created.');
+            });
+        });
+    }
+
+    /**
+     * Saves node name to rename in memory
+     * rnto() should be called right after
+     * @param {String} nodeName 
+     */
+    rnfr(nodeName) {
+        this.nodeName = nodeName;
+    }
+
+    /**
+     * Renames corresponding node according to previous rnfr() call
+     * @param {string} nodeName 
+     * @returns {string} Result FTP code and message
+     */
+    rnto(nodeName) {
+        return new Promise((resolve, reject) => {
+            exec(`mv ${this.buildPath(this.nodeName)} ${this.buildPath(nodeName)}`, err => {
+                if (err) return reject('550 Permission denied.');
+                this.nodeName = '';
+                return resolve('250 Successfuly renamed.');
+            });
+        });
+    }
+
+    /**
+     * Removes a node
+     * @param {string} nodeName 
+     * @returns {string} Result FTP code and message
+     */
+    rmd(nodeName) {
+        return new Promise((resolve, reject) => {
+            exec(`rm -rf ${this.buildPath(nodeName)}`, err => {
+                if (err) return reject('550 Permission denied.');
+                return resolve('250 Successfuly deleted.');
+            });
+        });
+    }
+
+    /**
+     * Retrieves a node
+     * @param {string} nodeName 
+     * @returns {buffer|string} Node buffer or FTP error code and message
+     */
+    async retr(nodeName) {
+        const nodePath = this.buildPath(nodeName);
+        try {
+            const node = await fs.lstat(nodePath);
+            if (node.isFile()) {
+                return await fs.readFile(nodePath);
+            } else {
+                throw new Error('550 Requested node must be a file');
+            }
+        } catch (error) {
+            throw new Error('550 This file does not exist or is not accessible');
+        }
+    }
+
+    /**
+     * Stores a new node
+     * @param {string} nodeName 
+     * @param {buffer} nodeBuffer 
+     * @returns {boolean}  
+     */
+    async stor(nodeName, nodeBuffer) {
+        return new Promise((resolve, reject) => {
+            fs.writeFile(this.buildPath(nodeName), nodeBuffer, err => {
+                if (err) return reject(err);
+                console.log(nodeName, nodeBuffer)
+                return resolve(true);
+            });
+        });
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#cdup">cdup</a></li><li><a href="global.html#cwd">cwd</a></li><li><a href="global.html#initConnection">initConnection</a></li><li><a href="global.html#list">list</a></li><li><a href="global.html#mkd">mkd</a></li><li><a href="global.html#pwd">pwd</a></li><li><a href="global.html#retr">retr</a></li><li><a href="global.html#rmd">rmd</a></li><li><a href="global.html#rnfr">rnfr</a></li><li><a href="global.html#rnto">rnto</a></li><li><a href="global.html#stor">stor</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sat Mar 06 2021 20:07:40 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
