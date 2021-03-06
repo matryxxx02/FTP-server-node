@@ -1,13 +1,12 @@
 export default {
-    commandName: 'CWD',
+    commandName: 'RNTO',
     handler: async ({ socket, message, fs }, write) => {
         let res;
         try {
-            res = await fs.cwd(message);
+            res = await fs.rnto(message);
         } catch (error) {
             res = error;
         }
-        console.log(res)
-        write(socket, res);
+        write(socket, "250 Rename successful");
     }
 }

@@ -5,5 +5,9 @@ export default class ConnectorMode {
     
     prepareConnection = () => { }
     
-    waitConnection = () => {}
+    waitConnection = () => { }
+    
+    destroyDataSocket = () => {
+        if(this.dataSocket) this.dataSocket.destroy()
+    }
 }

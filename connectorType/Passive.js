@@ -21,7 +21,6 @@ export default class Passive extends ConnectorMode {
     setupDataSocket = (socket) => {
         console.log('client connected to data pipe')
         this.dataSocket = socket;
-        socket.write('ta mere \r\n');
     }
 
     waitConnection = () => {

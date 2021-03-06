@@ -5,6 +5,7 @@ export default class FileSystem {
 
     constructor() {
         this.path = [];
+        this.nodeName = "";
     }
 
     /**
@@ -23,7 +24,8 @@ export default class FileSystem {
      * @returns 
      */
     pwd() {
-        return `257 "${this.buildPath().slice(4)}" is the current directory`;
+        const path = this.buildPath().slice(4);
+        return `257 "${path ? path : '/'}" is the current directory`;
     }
 
     /**
@@ -62,7 +64,8 @@ export default class FileSystem {
         return new Promise((resolve, reject) => {
             exec(`ls -l ${args} ${this.buildPath()}`, (err, stdout) => {
                 if (err) return reject('550 Failed to retrieve directory listing.');
-                return resolve(stdout.split('\n').slice(1).join('\n'));
+                const ls = stdout.split('\n').slice(1).join('\n');
+                return resolve(ls.normalize('NFD').replace(/[\u0300-\u036f]/g, ""));
             });
         });
     }
@@ -81,16 +84,21 @@ export default class FileSystem {
         });
     }
 
+    rnfr(nodeName) {
+        this.nodeName = nodeName;
+    }
+
     /**
      * 
      * @param {*} oldName 
      * @param {*} newName 
      * @returns 
      */
-    rnto(oldName, newName) {
+    rnto(nodeName) {
         return new Promise((resolve, reject) => {
-            exec(`mv ${this.buildPath(oldName)} ${this.buildPath(newName)}`, err => {
+            exec(`mv ${this.buildPath(this.nodeName)} ${this.buildPath(nodeName)}`, err => {
                 if (err) return reject('550 Permission denied.');
+                this.nodeName = '';
                 return resolve('250 Successfuly renamed.');
             });
         });
