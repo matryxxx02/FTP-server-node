@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -r dotenv/config --experimental-specifier-resolution=node index.js",
-    "dev": "nodemon -r dotenv/config --experimental-worker --experimental-specifier-resolution=node index.js"
+    "dev": "nodemon -r dotenv/config --experimental-worker --experimental-specifier-resolution=node index.js",
+    "doc": "jsdoc"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "jsdoc": "^3.6.6",
     "nodemon": "^2.0.7"
   }
 }
