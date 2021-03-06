@@ -7,8 +7,7 @@ export default {
         } catch (error) {
             res = error;
         }
-        console.log(message, res)
-        //await write(socket, "150 Here comes the directory listing.");
+
         socket.write(`150 Here comes the directory listing.\r\n`);
         await commands.connector.dataSocket.write(res);
         await commands.connector.destroyDataSocket();
