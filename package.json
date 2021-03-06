@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -r dotenv/config --experimental-specifier-resolution=node index.js",
-    "dev": "nodemon -r dotenv/config --experimental-worker --experimental-specifier-resolution=node index.js"
+    "dev": "nodemon -r dotenv/config --experimental-worker --experimental-specifier-resolution=node index.js",
+    "doc": "jsdoc -r connectorType/ modules/"
   },
   "repository": {
     "type": "git",
@@ -16,9 +17,12 @@
   "author": "Nicolas Fernandes & Mickael Gomez",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "istextorbinary": "^5.12.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "jsdoc": "^3.6.6",
     "nodemon": "^2.0.7"
   }
 }
