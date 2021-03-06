@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -r dotenv/config --experimental-specifier-resolution=node index.js",
     "dev": "nodemon -r dotenv/config --experimental-worker --experimental-specifier-resolution=node index.js",
-    "doc": "jsdoc"
+    "doc": "jsdoc -r connectorType/ modules/"
   },
   "repository": {
     "type": "git",

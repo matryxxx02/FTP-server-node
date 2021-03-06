@@ -1,8 +1,17 @@
-import {v4 as uuid} from 'uuid'
+import { v4 as uuid } from 'uuid'
 import CommandsFTP from './CommandsFTP.js'
 
+/**
+ * Creates a new FTP connection handler
+ * @class
+ */
 export default class ConnectionFTP {
-    constructor(server, socket) { 
+
+    /**
+     * @param {Server} server 
+     * @param {Socket} socket 
+     */
+    constructor(server, socket) {
         this.server = server;
         this.commandSocket = socket;
         this.id = uuid();
@@ -16,11 +25,11 @@ export default class ConnectionFTP {
         //events : 
         this.commandSocket.on('data', (data) => this.commands.executeCommand(data))
     }
-    
+
     /**
-     * 
-     * @param {*} login 
-     * @param {*} pwd 
+     * Manages FTP authentication state
+     * @param {string} login 
+     * @param {string} pwd 
      */
     authent = (login, pwd) => {
         this.authenticated = true;
