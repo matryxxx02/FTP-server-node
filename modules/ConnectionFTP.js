@@ -10,6 +10,7 @@ export default class ConnectionFTP {
         this.authenticated = false;
         this.login = null;
         this.password = null;
+        this.transferMode = "";
 
         //events : 
         this.commandSocket.on('data', (data) => this.commands.executeCommand(data))

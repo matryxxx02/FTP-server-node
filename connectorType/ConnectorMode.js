@@ -1,6 +1,9 @@
 export default class ConnectorMode {
-    constructor(socket) {
-        this.socket = socket
+    constructor(connection) {
+        this.connection = connection
     }
     
+    prepareConnection = () => { }
+    
+    waitConnection = () => {}
 }

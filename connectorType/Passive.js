@@ -1,15 +1,36 @@
+import ConnectorMode from './ConnectorMode'
+import { createServer } from 'net';
+
 export default class Passive extends ConnectorMode {
-    constructor(socket) {
-        this.socket = socket
-        const serverData = createServer(socket => write(socket, this.data));
+    constructor(connection) {
+        super(connection)
+        this.prepareConnection()
+    }
+
+    prepareConnection = () => {
+        const serverData = createServer(socket => this.setupDataSocket(socket));
         serverData.listen(0, () => console.log('Server data created'));
         const portData = serverData.address().port;
         this.pasv = `227 Entering passive mode (127,0,0,1,${Math.floor(portData / 256).toString()},${Math.floor(portData % 256).toString()})`
-        console.log(portData, response);
+        console.log(portData);
     }
 
-    get pasv() { return this.pasv; }
+    setupDataSocket = (socket) => {
+        console.log('client connected to data pipe')
+        this.dataSocket = socket;
+    }
 
-    get pasvSocket() { return this.dataSocket; }
-    
+    waitConnection = () => {
+        setTimeout(() => {
+            
+        }, 5000)
+    }
+
+    checkSocket = () => {
+        if (this.dataSocket) {
+            return this.dataSocket
+            clearInterval(this.pendingConnection)
+        }
+
+    }
 }

@@ -20,13 +20,16 @@ export default class CommandsFTP {
     executeCommand = (req) => {
         const clientRequest = this.parseClientResponse(req);
         const command = registry[clientRequest.command];
-
+        console.log(clientRequest)
         if (command) command.handler({
             socket: this.connection.commandSocket,
             connection: this.connection,
             message: clientRequest.message,
-            fs: this.fs
+            fs: this.fs,
+            commands: this,
+            dataSocket: this.dataSocket
         }, write);
-        else write(this.connection.commandSocket, "530 notexist")
+        else if (!this.connection.authenticated) write(this.connection.commandSocket, "530 Please login with USER and PASS.")
+        else write(this.connection.commandSocket, "500 Unknown command.")
     }
 }

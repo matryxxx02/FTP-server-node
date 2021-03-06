@@ -14,7 +14,7 @@ export default class FileSystem {
     }
 
     pwd() {
-        return `257 "${this.buildPath().slice(4)}" is the current directory`;
+        return `257 "${this.buildPath().slice(4)==="" ? "/": this.buildPath().slice(4)}" is the current directory`;
     }
 
     cwd(path) {
