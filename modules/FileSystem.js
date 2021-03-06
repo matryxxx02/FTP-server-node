@@ -7,16 +7,30 @@ export default class FileSystem {
         this.path = [];
     }
 
+    /**
+     * 
+     * @param {*} path 
+     * @returns 
+     */
     buildPath(path) {
         const curPath = this.path.length > 0 ? `/${this.path.join('/')}` : '';
         const endPath = path ? `/${path}` : '';
         return `root${curPath}${endPath}`;
     }
 
+    /**
+     * 
+     * @returns 
+     */
     pwd() {
         return `257 "${this.buildPath().slice(4)==="" ? "/": this.buildPath().slice(4)}" is the current directory`;
     }
 
+    /**
+     * 
+     * @param {*} path 
+     * @returns 
+     */
     cwd(path) {
         return new Promise((resolve, reject) => {
             exec(`cd ${this.buildPath(path)}`, err => {
@@ -27,6 +41,10 @@ export default class FileSystem {
         });
     }
 
+    /**
+     * 
+     * @returns 
+     */
     cdup() {
         if (this.path.length > 0) {
             this.path.pop();
@@ -35,6 +53,11 @@ export default class FileSystem {
         throw new Error('550 Failed to change directory.');
     }
 
+    /**
+     * 
+     * @param {*} args 
+     * @returns 
+     */
     list(args = '') {
         return new Promise((resolve, reject) => {
             exec(`ls -l ${args} ${this.buildPath()}`, (err, stdout) => {
@@ -44,6 +67,11 @@ export default class FileSystem {
         });
     }
 
+    /**
+     * 
+     * @param {*} nodeName 
+     * @returns 
+     */
     mkd(nodeName) {
         return new Promise((resolve, reject) => {
             exec(`mkdir ${this.buildPath(nodeName)}`, err => {
@@ -53,6 +81,12 @@ export default class FileSystem {
         });
     }
 
+    /**
+     * 
+     * @param {*} oldName 
+     * @param {*} newName 
+     * @returns 
+     */
     rnto(oldName, newName) {
         return new Promise((resolve, reject) => {
             exec(`mv ${this.buildPath(oldName)} ${this.buildPath(newName)}`, err => {
@@ -62,6 +96,11 @@ export default class FileSystem {
         });
     }
 
+    /**
+     * 
+     * @param {*} nodeName 
+     * @returns 
+     */
     rmd(nodeName) {
         return new Promise((resolve, reject) => {
             exec(`rm -rf ${this.buildPath(nodeName)}`, err => {
@@ -71,6 +110,11 @@ export default class FileSystem {
         });
     }
 
+    /**
+     * 
+     * @param {*} nodeName 
+     * @returns 
+     */
     async retr(nodeName) {
         const nodePath = this.buildPath(nodeName);
         try {
@@ -85,6 +129,12 @@ export default class FileSystem {
         }
     }
 
+    /**
+     * 
+     * @param {*} nodeName 
+     * @param {*} nodeBuffer 
+     * @returns 
+     */
     async stor(nodeName, nodeBuffer) {
         return new Promise((resolve, reject) => {
             fs.writeFile(this.buildPath(nodeName), nodeBuffer, err => {

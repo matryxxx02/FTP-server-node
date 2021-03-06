@@ -20,6 +20,7 @@ Serveur FTP en [Node.js](https://nodejs.org).
 
 ## Installation & Exécution
 
+Avant d'éxécuter le serveur veuillez renseigner le port (21 par défaut) et le répertoire racine du serveur FTP
 Exécuter la commande suivante permet d'installer toutes les dépences nécessaires :
 
 ```bash
@@ -29,7 +30,7 @@ npm install
 Puis pour lancer le serveur :
 
 ```bash
-node index.js
+npm run start
 ```
 
 ## Documentation
