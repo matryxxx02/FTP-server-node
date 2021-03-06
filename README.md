@@ -4,6 +4,7 @@ Serveur FTP en [Node.js](https://nodejs.org).
 
 ## Architecture
 
+Voici l'architecture du projet :
 ![architecture-projet](./archi-project.png)
 
 ### Classes
@@ -59,8 +60,8 @@ Voici le module commandsRegistry qui permet de créer un objet registry qui cont
 Grâce à ce bout de code, pour ajouter une nouvelle commande, il suffit d'ajouter un fichier avec la même structure que les autres commandes.<br>
 
 Voici la structure d'une commande :<br>
-- commandName : représente le nom de la commande FTP
-- handler : c'est la fonction qui contient le code de la commande pour pouvoir l'executer 
+- commandName : représente le nom de la commande FTP.
+- handler : c'est la fonction qui contient le code de la commande pour pouvoir l'executer. 
 
 ```js
 export default {
