@@ -8,7 +8,7 @@ import { exec } from 'child_process';
 export default class FileSystem {
 
     constructor() {
-        this.root = process.env.HOME;
+        this.root = process.env.HOME_DIR || "root";
         this.path = [];
         this.nodeName = "";
     }
@@ -31,6 +31,7 @@ export default class FileSystem {
      */
     pwd() {
         const path = this.buildPath().slice(4);
+        console.log(path)
         return `257 "${path ? path : '/'}" is the current directory`;
     }
 
