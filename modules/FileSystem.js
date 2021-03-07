@@ -154,12 +154,14 @@ export default class FileSystem {
      * @param {buffer} nodeBuffer 
      * @returns {boolean}  
      */
-    async stor(nodeName, nodeBuffer) {
+    stor(nodeName, nodeBuffer) {
         return new Promise((resolve, reject) => {
             fs.writeFile(this.buildPath(nodeName), nodeBuffer, err => {
                 if (err) return reject(err);
-                return resolve(true);
             });
+            return resolve(true);
         });
     }
 }
+
+// const fs = new FileSystem();
