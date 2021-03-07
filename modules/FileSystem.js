@@ -31,7 +31,7 @@ export default class FileSystem {
      */
     pwd() {
         const path = this.buildPath().slice(4);
-        return `257 "${path ? path : '/'}" is the current directory`;
+        return `257 "${path ? path : '/'}" is the current directory.`;
     }
 
     /**

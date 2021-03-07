@@ -98,6 +98,13 @@ Puis pour lancer le serveur :
 ```bash
 npm run start
 ```
+## Test
+Les tests ont été réalisés avec [mocha](https://mochajs.org/) et [chai](https://www.chaijs.com/).<br>
+Pour exécuter les tests du projet, veuillez lancer la commande suivante :
+
+```bash
+npm run test
+```
 
 ## Documentation
 
