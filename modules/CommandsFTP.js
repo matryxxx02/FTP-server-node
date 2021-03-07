@@ -12,9 +12,10 @@ export default class CommandsFTP {
      * @param {ConnectionFTP} connection 
      */
     constructor(connection) {
-        this.commandHistory = {}
+        this.commandHistory = {};
         this.connection = connection;
-        this.fs = new FileSystem()
+        this.fs = new FileSystem();
+        this.commandWithoutAuthent = ["user", "pass"];
     }
 
     /**
@@ -51,6 +52,6 @@ export default class CommandsFTP {
     }
 
     canExecute = (clientRequest) => {
-        return (this.connection.authenticated || (clientRequest.command === 'user' || clientRequest.command === 'pass'))
+        return (this.connection.authenticated || this.commandWithoutAuthent.includes(clientRequest.command))
     }
 }
