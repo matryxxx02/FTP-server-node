@@ -1,4 +1,4 @@
-# 💻 Serveur FTP • Nicolas Fernandes & Mickael Gomez • 23/02/2021
+# 💻 Serveur FTP • 23/02/2021
 
 Serveur FTP en [Node.js](https://nodejs.org).
 
